@@ -25,6 +25,6 @@
 (score will brent)
 (score john brent)
 
-(apply max-key (partial score brent) professor-list)
-
+(defn recommend [stud] (apply max-key (partial score stud) professor-list))
+(recommend brent)
 (+ 2 2)

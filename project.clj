@@ -9,5 +9,6 @@
                  [ring/ring-devel "1.1.8"]
                  [compojure "1.1.5"]
                  [ring-cors "0.1.0"]
-                 [lobos ]]
+                 [com.novemberain/monger "1.5.0"]
+                 [clj-yaml "0.3.1"]]
   :main matcher.server)
