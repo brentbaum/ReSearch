@@ -11,19 +11,27 @@
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
 (defn score-student [req]
-  (generate-string (let [id (-> req :params :id)
+  (generate-string (let [email (-> req :params :email)
                          name (-> req :params :name)
                          interests (-> req :params :interests)]
-                     (mcore/score mcore/weights (mcore/student name id interests)))))
+                     (mcore/score mcore/weights (mcore/student name email interests)))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
-  (let [id (-> req :params :id)
+  (let [email (-> req :params :email)
         name (-> req :params :name)
-        interests (-> req :params :interests)]
-    db/store-student name id interests))
+        interests (-> req :params :interests)
+        stud (db/store-student name email interests)]
+    (generate-string (mcore/recommend stud))))
+
+(defn create-professor [req]
+  (let [email (-> req :params :email)
+        name (-> req :params :name)
+        interests (-> req :params :interests)
+        research (-> req :params :research)]
+    (json-response (db/store-professor (professor name interests email research)))))
 
 (defn json-response [data & [status]]
   {:status (or status 200)
@@ -37,6 +45,7 @@
            (POST "/new" [] (create-student))
            (GET "/:id" [id] (json-response (dissoc (mcore/get-student-info id) :_id)))
            (POST "/:id" [id] (update-student-info)))
+  (context "/professor/new" [] create-professor)
   (not-found "<p>Page not found.</p>"))
 
 (defn logging [chain] (fn [req]
