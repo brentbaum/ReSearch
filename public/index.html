@@ -1,0 +1,84 @@
+<!doctype html>
+<html ng-app="matcher">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+    <script src="js/main.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">UVA Advisor Search</a>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Advisor Search</h1>
+
+        <p>Bacon ipsum dolor sit amet tenderloin pork belly turducken meatloaf, ham leberkas swine ham hock ball tip cow
+            frankfurter shank jowl tri-tip strip steak. Ground round pig pancetta sausage. </p>
+    </div>
+</div>
+
+<div class="container" ng-controller="matcherForm">
+    <div class="form-group">
+        <label class="control-label" for="nameInput">Full Name</label>
+        <input id="nameInput" ng-model="name" class="form-control" placeholder="Thomas Jefferson" type="text"/>
+    </div>
+
+    <!-- UVA EMAIL -->
+    <div class="form-group">
+        <label class="control-label" for="emailInput">UVa Email</label>
+        <input required id="emailInput" ng-model="email" class="form-control" placeholder="tj8di@virginia.edu"
+               type="email"/>
+    </div>
+
+    <!-- PROFESSOR OR STUDENT -->
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="isProfessor"/> I am a professor.
+        </label>
+    </div>
+
+    <!-- RESEARCH DESCRIPTION -->
+    <div ng-show="isProfessor">
+        <div class="form-group" rows="3">
+            <label class="control-label" for="researchDescription">Research Description</label>
+            <textarea ng-model="research" class="form-control" id="researchDescription"></textarea>
+        </div>
+    </div>
+
+    <!-- INTERESTS -->
+    <label>Academic Interests</label>
+    <accordion close-others="false">
+        <accordion-group ng-repeat="field in fields" ng-click="field.open = !field.open" is-open="field.open">
+            <accordion-heading>
+                <input type="checkbox" ng-click="fieldClick(field, $event)"/>
+                {{field.title}}
+            </accordion-heading>
+            <div class="checkbox" ng-repeat="focus in field.focuses">
+                <label>
+                    <input type="checkbox" ng-click="updateInterest(focus.id, $event.currentTarget.checked, $event);"
+                           ng-model="focus.selected"/> {{focus.title}}
+                </label>
+            </div>
+        </accordion-group>
+    </accordion>
+
+    <div class="form-group" style="margin-top: 20px;">
+        <a class="btn btn-success" href="" ng-click="submitForm">Submit</a>
+    </div>
+</div>
+</body>
+</html>
