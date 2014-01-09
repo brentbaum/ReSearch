@@ -1,5 +1,7 @@
 angular.module('matcher', ['ui.bootstrap'])
     .controller('matcherForm', ['$scope', 'httpService', function ($scope, httpService) {
+        $scope.showResults = false;
+
         $scope.fields = [
             {
                 title: "Computer Science",
@@ -62,17 +64,22 @@ angular.module('matcher', ['ui.bootstrap'])
 
         $scope.submitForm = function () {
             if ($scope.isProfessor)
-                httpService.storeProfessor($scope.name, $scope.email, $scope.research, interestsList);
+                httpService.storeProfessor($scope.name, $scope.email, $scope.research, interestsList, createCallback);
             else
-                httpService.createStudent($scope.name, $scope.email, interestsList)
+                httpService.createStudent($scope.name, $scope.email, interestsList, createCallback)
+        }
+
+        function createCallback (data) {
+            $scope.showResults = true;
+            $scope.result = data;
         }
     }])
     .factory('httpService', ['$http', function ($http) {
         var service = {};
 
-        var url = 'http://localhost:8080';
+        var url = '';
 
-        service.storeProfessor = function (name, email, research, interests) {
+        service.storeProfessor = function (name, email, research, interests, cb) {
             $http.post(url + '/professor/new', {
                 name: name,
                 email: email,
@@ -80,18 +87,18 @@ angular.module('matcher', ['ui.bootstrap'])
                 interests: interests
             })
                 .success(function(data) {
-                    console.log(data);
+                    cb(data);
                 })
         }
 
-        service.createStudent = function(name, email, interests) {
+        service.createStudent = function(name, email, interests, cb) {
             $http.post(url + '/student/new', {
                 name: name,
                 email: email,
                 interests: interests
             })
                 .success(function(data) {
-                    console.log(data);
+                    cb(data);
                 })
         }
 

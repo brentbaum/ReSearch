@@ -17,67 +17,83 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">UVA Advisor Search</a>
+            <a class="navbar-brand" href="#">UVA ReSearch</a>
         </div>
     </div>
 </div>
 
 <div class="jumbotron">
     <div class="container">
-        <h1>Advisor Search</h1>
+        <h1>ReSearch Assistant</h1>
 
-        <p>Bacon ipsum dolor sit amet tenderloin pork belly turducken meatloaf, ham leberkas swine ham hock ball tip cow
-            frankfurter shank jowl tri-tip strip steak. Ground round pig pancetta sausage. </p>
+        <p>UVA ReSearch matches you with the professor that you will have the highest probability of success with.</p>
     </div>
 </div>
 
 <div class="container" ng-controller="matcherForm">
-    <div class="form-group">
-        <label class="control-label" for="nameInput">Full Name</label>
-        <input id="nameInput" ng-model="name" class="form-control" placeholder="Thomas Jefferson" type="text"/>
-    </div>
+    <div collapse="showResults">
+        <div class="form-group">
+            <label class="control-label" for="nameInput">Full Name</label>
+            <input id="nameInput" ng-model="name" class="form-control" placeholder="Thomas Jefferson" type="text"/>
+        </div>
 
-    <!-- UVA EMAIL -->
-    <div class="form-group">
-        <label class="control-label" for="emailInput">UVa Email</label>
-        <input required id="emailInput" ng-model="email" class="form-control" placeholder="tj8di@virginia.edu"
-               type="email"/>
-    </div>
+        <!-- UVA EMAIL -->
+        <div class="form-group">
+            <label class="control-label" for="emailInput">UVa Email</label>
+            <input required id="emailInput" ng-model="email" class="form-control" placeholder="tj8di@virginia.edu"
+                   type="email"/>
+        </div>
 
-    <!-- PROFESSOR OR STUDENT -->
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="isProfessor"/> I am a professor.
-        </label>
-    </div>
+        <!-- PROFESSOR OR STUDENT -->
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="isProfessor"/> I am a professor.
+            </label>
+        </div>
 
-    <!-- RESEARCH DESCRIPTION -->
-    <div ng-show="isProfessor">
-        <div class="form-group" rows="3">
-            <label class="control-label" for="researchDescription">Research Description</label>
-            <textarea ng-model="research" class="form-control" id="researchDescription"></textarea>
+        <!-- RESEARCH DESCRIPTION -->
+        <div ng-show="isProfessor">
+            <div class="form-group" rows="3">
+                <label class="control-label" for="researchDescription">Research Description</label>
+                <textarea ng-model="research" class="form-control" id="researchDescription"></textarea>
+            </div>
+        </div>
+
+        <!-- INTERESTS -->
+        <label>Academic Interests</label>
+        <accordion close-others="false">
+            <accordion-group ng-repeat="field in fields" ng-click="field.open = !field.open" is-open="field.open">
+                <accordion-heading>
+                    <input type="checkbox" ng-click="fieldClick(field, $event)"/>
+                    {{field.title}}
+                </accordion-heading>
+                <div class="checkbox" ng-repeat="focus in field.focuses">
+                    <label>
+                        <input type="checkbox" ng-click="updateInterest(focus.id, $event.currentTarget.checked, $event);"
+                               ng-model="focus.selected"/> {{focus.title}}
+                    </label>
+                </div>
+            </accordion-group>
+        </accordion>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button class="btn btn-success" ng-click="submitForm()">Submit</button>
         </div>
     </div>
-
-    <!-- INTERESTS -->
-    <label>Academic Interests</label>
-    <accordion close-others="false">
-        <accordion-group ng-repeat="field in fields" ng-click="field.open = !field.open" is-open="field.open">
-            <accordion-heading>
-                <input type="checkbox" ng-click="fieldClick(field, $event)"/>
-                {{field.title}}
-            </accordion-heading>
-            <div class="checkbox" ng-repeat="focus in field.focuses">
-                <label>
-                    <input type="checkbox" ng-click="updateInterest(focus.id, $event.currentTarget.checked, $event);"
-                           ng-model="focus.selected"/> {{focus.title}}
-                </label>
-            </div>
-        </accordion-group>
-    </accordion>
-
-    <div class="form-group" style="margin-top: 20px;">
-        <button class="btn btn-success" ng-click="submitForm()">Submit</button>
+    <div collapse="!showResults">
+        <div ng-show="!isProfessor">
+            <h2>Your Matches</h2>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h4 class="list-group-item-heading">{{result.name}}</h4>
+                    <p class="list-group-item-text">{{result.research}}</p>
+                    <a class="btn btn-primary" href="mailto:{{result.email}}">Contact me</a>
+                </li>
+            </ul>
+        </div>
+        <div ng-show="isProfessor" class="alert alert-success">
+            Thank you! Your information has been entered into our system.
+        </div>
     </div>
 </div>
 </body>
