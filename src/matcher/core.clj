@@ -1,7 +1,8 @@
 (ns matcher.core
-  (:use [matcher.db :as db]))
+  (:use [matcher.db :as db]
+        [clojure.set :as set]))
 
-(def weights [3 3 1 2 4])
+(def weights {})
 
 (defn person [n i e] {:name n :interests i :email e})
 
@@ -12,9 +13,9 @@
 (def professor-list (db/get-professors))
 
 (defn score [w prof stud]
-  (let [s1 (prof :interests)
-        s2 (stud :interests)]
-  (reduce + (map * s1 s2 w))))
+  (let [s1 (-> prof :interests set)
+        s2 (-> stud :interests set)]
+  (reduce #(+ (get w %2 1) %1) 0 (set/intersection s1 s2))))
 
 (defn recommend [stud] (apply max-key (partial score weights stud) (db/get-professors)))
 
