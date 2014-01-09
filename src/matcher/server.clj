@@ -3,54 +3,53 @@
         [ matcher.core :as mcore]
         [ matcher.middleware :as mdw]
         [ matcher.db :as db]
-        [ compojure.route :only [files not-found]]
+        [ compojure.route :only [files]]
         [ compojure.handler :only [site]]
         [ compojure.core :only [defroutes GET POST DELETE ANY context]]
-        [ cheshire.core :refer :all]))
+        [ ring.middleware.json]
+        [ ring.util.response]))
 
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
 (defn score-student [req]
-  (generate-string (let [email (-> req :params :email)
-                         name (-> req :params :name)
-                         interests (-> req :params :interests)]
-                     (mcore/score mcore/weights (mcore/student name email interests)))))
+  (let [email (-> req :params (get "email"))
+                         name (-> req :body (get "name"))
+                         interests (-> req :body (get "interests"))]
+                     (mcore/score mcore/weights (mcore/student name interests email))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
-  (let [email (-> req :params :email)
-        name (-> req :params :name)
-        interests (-> req :params :interests)
-        stud (db/store-student name email interests)]
-    (generate-string (mcore/recommend stud))))
+  (println (-> req :body (get "email")))
+  (let [email (-> req :body (get "email"))
+        name (-> req :body (get "name"))
+        interests (-> req :body (get "interests"))
+        stud (db/store-student (student name interests email))]
+    (mcore/recommend stud)))
 
 (defn create-professor [req]
-  (let [email (-> req :params :email)
-        name (-> req :params :name)
-        interests (-> req :params :interests)
-        research (-> req :params :research)]
-    (json-response (db/store-professor (professor name interests email research)))))
+  (let [email (-> req :body (get "email"))
+        name (-> req :body (get "name"))
+        interests (-> req :body (get "interests"))
+        research (-> req :body (get "research"))]
+    (db/store-professor (professor name interests email research))))
 
-(defn json-response [data & [status]]
-  {:status (or status 200)
-   :headers {"Content-Type" "application/json"}
-   :body (generate-string data)})
 
 (defroutes handler
   (GET "/" [] show-landing-page)
   (POST "/recommend" [] score-student)
   (context "/student" []
-           (POST "/new" [] (create-student))
-           (GET "/:id" [id] (json-response (dissoc (mcore/get-student-info id) :_id)))
-           (POST "/:id" [id] (update-student-info)))
-  (context "/professor/new" [] create-professor)
+           (POST "/new" [] create-student)
+           (GET "/:id" [id] mcore/get-student-info id)
+           (POST "/:id" [id] update-student-info))
+  (POST "/professor/new" [] create-professor)
   (not-found "<p>Page not found.</p>"))
 
 (defn logging [chain] (fn [req]
                                (println req)
                                (chain req)))
 
-(def app (-> handler logging))
+(def app (-> handler logging wrap-json-body))
+
 (defn -main [& args] (let [ server (run-server app {:port 8080})]))

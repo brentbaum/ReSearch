@@ -16,7 +16,7 @@
         s2 (stud :interests)]
   (reduce + (map * s1 s2 w))))
 
-(defn recommend [stud lst] (apply max-key (partial score stud) lst))
+(defn recommend [stud] (apply max-key (partial score weights stud) (db/get-professors)))
 
 (defn get-student-info [id]
   ( db/get-student-by-id id))
