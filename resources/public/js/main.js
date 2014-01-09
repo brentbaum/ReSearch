@@ -70,23 +70,27 @@ angular.module('matcher', ['ui.bootstrap'])
     .factory('httpService', ['$http', function ($http) {
         var service = {};
 
+        var url = 'http://localhost:8080';
+
         service.storeProfessor = function (name, email, research, interests) {
-            $http.post({
+            $http.post(url + '/professor/new', {
                 name: name,
                 email: email,
                 research: research,
                 interests: interests
-            }).success(function(data) {
+            })
+                .success(function(data) {
                     console.log(data);
                 })
         }
 
         service.createStudent = function(name, email, interests) {
-            $http.post({
+            $http.post(url + '/student/new', {
                 name: name,
                 email: email,
                 interests: interests
-            }).success(function(data) {
+            })
+                .success(function(data) {
                     console.log(data);
                 })
         }
