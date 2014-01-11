@@ -12,36 +12,38 @@
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
 (defn score-student [req]
-  (let [email (-> req :body (get "email"))
+  (let [id (-> req :body (get "id"))
         name (-> req :body (get "name"))
         interests (-> req :body (get "interests"))]
-    (response (mcore/recommend (mcore/student name interests email)))))
+    (response (mcore/recommend (mcore/student name interests id)))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
-  (let [email (-> req :body (get "email"))
+  (let [id (-> req :body (get "id"))
         name (-> req :body (get "name"))
         interests (-> req :body (get "interests"))
-        stud (db/store-student (student name interests email))]
+        stud (db/store-student (student name interests id))]
     (response (mcore/recommend stud))))
 
 (defn create-professor [req]
-  (let [email (-> req :body (get "email"))
+  (let [id (-> req :body (get "id"))
         name (-> req :body (get "name"))
         interests (-> req :body (get "interests"))
         research (-> req :body (get "research"))]
-    (response (db/store-professor (professor name interests email research)))))
+    (response (db/store-professor (professor name interests id research)))))
 
 (defroutes handler
-  (GET "/" [] (redirect "/index.html"))
+  (GET "/" [] (file-response "/index.html" {:root "resources/public"}))
   (POST "/recommend" [] score-student)
   (context "/student" []
+           (GET "/" [] (file-response "/index.html" {:root "resources/public"}))
            (POST "/new" [] create-student)
            (GET "/:id" [id] mcore/get-student-info id)
            (POST "/:id" [id] update-student-info))
   (POST "/professor/new" [] create-professor)
+  (GET "/professor" [] (file-response "/index.html" {:root "resources/public"}))
   (resources "/")
   (not-found "<p>Page not found.</p>"))
 

@@ -4,9 +4,9 @@
 
 (def weights {})
 
-(defn person [n i e] {:name n :interests i :email e})
+(defn person [n i e] {:name n :interests i :id e})
 
-(defn professor [name interests email research ] (merge {:research research} (person name interests email)))
+(defn professor [name interests id research ] (merge {:research research} (person name interests id)))
 
 (defn student [n i e] (person n i e))
 
