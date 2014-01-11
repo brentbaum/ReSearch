@@ -1,5 +1,5 @@
 in_file = File.open("fields.txt", "r")
-out_file = File.open("fields.json", "w")
+out_file = File.open("resources/public/fields.json", "w")
 
 is_title = false
 first = true
