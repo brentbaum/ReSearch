@@ -24,7 +24,8 @@
   (let [id (-> req :body (get "id"))
         name (-> req :body (get "name"))
         interests (-> req :body (get "interests"))
-        stud (db/store-student (student name interests id))]
+        experience (-> req :body (get "experience"))
+        stud (db/store-student (student name interests id experience))]
     (response (mcore/recommend stud))))
 
 (defn create-professor [req]

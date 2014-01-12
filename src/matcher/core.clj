@@ -8,7 +8,7 @@
 
 (defn professor [name interests id research ] (merge {:research research} (person name interests id)))
 
-(defn student [n i e] (person n i e))
+(defn student [name interests id experience] (assoc (person name interests id) :experience experience))
 
 (def professor-list (db/get-professors))
 
