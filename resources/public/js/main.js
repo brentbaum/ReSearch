@@ -39,14 +39,13 @@ var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldLi
             interestsList = interestsList.filter(function (item) {
                 return item !== id;
             });
-        console.log(interestsList);
     }
 
     $scope.submitForm = function () {
         if ($scope.isProfessor)
-            httpService.storeProfessor($scope.name, $scope.id, $scope.research, interestsList, createCallback);
+            httpService.storeProfessor($scope.name, $scope.id, interestsList, $scope.research, createCallback);
         else
-            httpService.createStudent($scope.name, $scope.id, interestsList, createCallback)
+            httpService.createStudent($scope.name, $scope.id, interestsList, $scope.experience, createCallback);
     }
 
     function createCallback (data) {
@@ -60,23 +59,24 @@ var httpService = app.factory('httpService', ['$http', function ($http) {
 
         var url = '';
 
-        service.storeProfessor = function (name, id, research, interests, cb) {
+        service.storeProfessor = function (name, id, interests, research, cb) {
             $http.post(url + '/professor/new', {
                 name: name,
                 id: id,
-                research: research,
-                interests: interests
+                interests: interests,
+                research: research
             })
                 .success(function(data) {
                     cb(data);
                 })
         }
 
-        service.createStudent = function(name, id, interests, cb) {
+        service.createStudent = function(name, id, interests, experience, cb) {
             $http.post(url + '/student/new', {
                 name: name,
                 id: id,
-                interests: interests
+                interests: interests,
+                experience: experience
             })
                 .success(function(data) {
                     cb(data);

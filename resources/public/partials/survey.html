@@ -1,4 +1,5 @@
 <div class="container">
+    <h1>Student Research Form</h1>
     <div collapse="showResults">
         <div class="form-group">
             <label class="control-label" for="nameInput">Full Name</label>
@@ -7,7 +8,7 @@
 
         <!-- UVA EMAIL -->
         <div class="form-group">
-            <label class="control-label" for="idInput">Student Id</label>
+            <label class="control-label" for="idInput">UVa Id</label>
             <input required id="idInput" ng-model="id" class="form-control" placeholder="tj8di"
                    type="text"/>
         </div>
@@ -26,54 +27,58 @@
             <label>Have you worked with a UVA faculty member before?</label>
             <div class="radio">
                 <label class="radio-inline" >
-                    <input type="radio" name="hasDoneResearch" value="true" ng-model="hasDoneResearch" />
+                    <input type="radio" name="hasDoneResearch" value="true" ng-model="experience.hasDoneResearch" />
                     Yes
                 </label>
             </div>
             <div class="radio">
                 <label class="radio-inline">
-                    <input type="radio" name="hasDoneResearch" value="false" ng-model="hasDoneResearch" />
+                    <input type="radio" name="hasDoneResearch" value="false" ng-model="experience.hasDoneResearch" />
                     No
                 </label>
             </div>
         </div>
-        <div ng-show="hasDoneResearch">
+        <div ng-show="experience.hasDoneResearch">
+            <div class="form-group">
+                <label class="control-label" for="facultyId" >What was their UVa ID?</label>
+                <input id="facultyId" class="form-control" ng-model="experience.facultyId" type="text" />
+            </div>
             <label>Did you enjoy working with this faculty member?</label>
             <div class="radio">
                 <label class="radio-inline" >
-                    <input type="radio" name="enjoyedWork" value="true" ng-model="enjoyedWork" />
+                    <input type="radio" name="enjoyedWork" value="true" ng-model="experience.enjoyedWork" />
                     Yes
                 </label>
             </div>
             <div class="radio">
                 <label class="radio-inline">
-                    <input type="radio" name="enjoyedWork" value="false" ng-model="enjoyedWork"/>
+                    <input type="radio" name="enjoyedWork" value="false" ng-model="experience.enjoyedWork"/>
                     No
                 </label>
             </div>
             <label>Were you satisfied with what you learned and did while working with this faculty member?</label>
             <div class="radio">
                 <label class="radio-inline" >
-                    <input type="radio" name="wasSatisfied" value="true" ng-model="wasSatisfied" />
+                    <input type="radio" name="wasSatisfied" value="true" ng-model="experience.wasSatisfied" />
                     Yes
                 </label>
             </div>
             <div class="radio">
                 <label class="radio-inline">
-                    <input type="radio" name="wasSatisfied" value="false" ng-model="wasSatisfied" />
+                    <input type="radio" name="wasSatisfied" value="false" ng-model="experience.wasSatisfied" />
                     No
                 </label>
             </div>
             <label>Would you consider working with this faculty member again?</label>
             <div class="radio">
                 <label class="radio-inline" >
-                    <input type="radio" name="wouldWorkAgain" value="true" ng-model="wouldWorkAgain" />
+                    <input type="radio" name="wouldWorkAgain" value="true" ng-model="experience.wouldWorkAgain" />
                     Yes
                 </label>
             </div>
             <div class="radio">
                 <label class="radio-inline">
-                    <input type="radio" name="wouldWorkAgain" value="false" ng-model="wouldWorkAgain" />
+                    <input type="radio" name="wouldWorkAgain" value="false" ng-model="experience.wouldWorkAgain" />
                     No
                 </label>
             </div>
