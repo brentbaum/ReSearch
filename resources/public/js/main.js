@@ -2,7 +2,12 @@ var app = angular.module('matcher', ['ui.bootstrap'])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider.
             when('/', { templateUrl: '/partials/home.html',   controller: 'SurveyCtrl' }).
-            when('/student', { templateUrl: '/partials/survey.html',   controller: 'SurveyCtrl'}).
+            when('/student', { templateUrl: '/partials/survey.html',   controller: 'SurveyCtrl',
+                resolve: {
+                    setStudent: function() {
+                        isProfessor: false;
+                    }
+                }}).
             when('/professor', { templateUrl: '/partials/survey.html',   controller: 'SurveyCtrl',
                 resolve: {
                     setProfessor: function() {
