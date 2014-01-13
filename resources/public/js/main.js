@@ -4,25 +4,27 @@ var app = angular.module('matcher', ['ui.bootstrap'])
             when('/', { templateUrl: '/partials/home.html',   controller: 'SurveyCtrl' }).
             when('/student', { templateUrl: '/partials/survey.html',   controller: 'SurveyCtrl',
                 resolve: {
-                    setStudent: function() {
-                        isProfessor: false;
-                    }
+                    setStudent: ['sessionService', function(sessionService) {
+                       sessionService.isProfessor = false;
+                    }]
                 }}).
             when('/professor', { templateUrl: '/partials/survey.html',   controller: 'SurveyCtrl',
                 resolve: {
-                    setProfessor: function() {
-                        isProfessor = true;
-                    }
+                    setProfessor: ['sessionService', function(sessionService) {
+                       sessionService.isProfessor = true;
+                    }]
                 }});
 
         $locationProvider.html5Mode(true);
     }]);
 
-var isProfessor = false;
 
-var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldList', function ($scope, httpService, fieldList) {
+var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldList', 'sessionService', function ($scope, httpService, fieldList, sessionService) {
     $scope.showResults = false;
-    $scope.isProfessor = isProfessor;
+    $scope.isProfessor = sessionService.isProfessor;
+    $scope.$watch('sessionService.isProfessor', function(n) {
+        $scope.isProfessor = sessionService.isProfessor;
+    });
 
     fieldList.load(function(d) {
         $scope.fields = d;
@@ -119,3 +121,10 @@ var fieldlist = app.factory('fieldList', ['$http', function($http) {
         return service;
     }]);
 
+var sessionService = app.factory('sessionService', [function() {
+    var service = {};
+
+    service.isProfessor = false;
+
+    return service;
+}]);
