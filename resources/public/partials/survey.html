@@ -1,5 +1,6 @@
 <div class="container">
-    <h1>Student Research Form</h1>
+    <h1 ng-show="!isProfessor">Student Research Form</h1>
+    <h1 ng-show="isProfessor">Professor Research Form</h1>
     <div collapse="showResults">
         <div class="form-group">
             <label class="control-label" for="nameInput">Full Name</label>
