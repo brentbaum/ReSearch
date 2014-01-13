@@ -12,28 +12,21 @@
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
 (defn score-student [req]
-  (let [id (-> req :body (get "id"))
-        name (-> req :body (get "name"))
-        interests (-> req :body (get "interests"))]
-    (response (mcore/recommend (mcore/student name interests id)))))
+  (let [stud (student-from-request req)]
+    (response (mcore/recommend stud))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
-  (let [id (-> req :body (get "id"))
-        name (-> req :body (get "name"))
-        interests (-> req :body (get "interests"))
-        experience (-> req :body (get "experience"))
-        stud (db/store-student (student name interests id experience))]
-    (response (mcore/recommend stud))))
+  (let [stud (student-from-request req)
+        matches (mcore/recommend stud)]
+    (db/store-student (assoc stud :matches matches))
+    (response matches)))
 
 (defn create-professor [req]
-  (let [id (-> req :body (get "id"))
-        name (-> req :body (get "name"))
-        interests (-> req :body (get "interests"))
-        research (-> req :body (get "research"))]
-    (response (db/store-professor (professor name interests id research)))))
+  (let [prof (profesor-from-request req)]
+    (response (db/store-professor prof))))
 
 (defroutes handler
   (GET "/" [] (file-response "/index.html" {:root "resources/public"}))

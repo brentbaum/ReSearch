@@ -8,7 +8,21 @@
 
 (defn professor [name interests id research ] (merge {:research research} (person name interests id)))
 
+(defn professor-from-request [req]
+  (let [id (-> req :body (get "id"))
+        name (-> req :body (get "name"))
+        interests (-> req :body (get "interests"))
+        research (-> req :body (get "research"))]
+     (student name interests id experience))
+
 (defn student [name interests id experience] (assoc (person name interests id) :experience experience))
+
+(defn student-from-request [req]
+  (let [id (-> req :body (get "id"))
+        name (-> req :body (get "name"))
+        interests (-> req :body (get "interests"))
+        experience (-> req :body (get "experience"))]
+     (student name interests id experience))
 
 (def professor-list (db/get-professors))
 
