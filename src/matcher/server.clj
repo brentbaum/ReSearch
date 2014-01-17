@@ -13,19 +13,21 @@
 
 (defn score-student [req]
   (let [stud (student-from-request req)]
-    (response (mcore/recommend stud))))
+    (response (mcore/find-matches stud))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
   (let [stud (student-from-request req)
-        matches (mcore/recommend stud)]
-    (db/store-student (assoc stud :matches matches))
+        matches (mcore/find-matches stud)]
+    (db/store-student (assoc stud :matches (map :id matches)))
     (response matches)))
 
+(map :id [{:id 1}, {:id 2}, {:id 3}])
+
 (defn create-professor [req]
-  (let [prof (profesor-from-request req)]
+  (let [prof (professor-from-request req)]
     (response (db/store-professor prof))))
 
 (defroutes handler

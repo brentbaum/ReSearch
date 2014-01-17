@@ -110,7 +110,7 @@
         <div ng-show="!isProfessor">
             <h2>Your Matches</h2>
             <ul class="list-group">
-                <li class="list-group-item">
+                <li class="list-group-item" ng-repeat="result in results">
                     <h4 class="list-group-item-heading">{{result.name}}</h4>
                     <p class="list-group-item-text">{{result.research}}</p>
                     <a class="btn btn-primary" href="mailto:{{result.id}}">Contact me</a>

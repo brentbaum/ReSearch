@@ -56,7 +56,7 @@ var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldLi
 
     function createCallback(data) {
         $scope.showResults = true;
-        $scope.result = data;
+        $scope.results = data;
     }
 
     $scope.submitForm = function () {
