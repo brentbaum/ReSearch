@@ -10,5 +10,8 @@
                  [ring/ring-devel "1.1.8"]
                  [compojure "1.1.5"]
                  [ring-cors "0.1.0"]
-                 [com.novemberain/monger "1.7.0-beta1"]]
+                 [com.novemberain/monger "1.7.0-beta1"]
+                 ]
+  :plugins [[lein-autoexpect "1.2.1"]
+            [lein-kibit "0.0.8"]]
   :main matcher.server)

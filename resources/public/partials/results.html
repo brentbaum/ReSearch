@@ -1,0 +1,34 @@
+<div class="container">
+  <h1>Student-Advisor Matching Results</h1>
+  <h1 class="subtitle">Results for: {{id}}</h1>
+  <table class="table table-striped">
+    <tr>
+      <th>
+        P-Score
+      </th>
+      <th>
+        Id
+      </th>
+      <th>
+        Name
+      </th>
+      <th>
+        Major
+      </th>
+    </tr>
+    <tr ng-repeat="student in results">
+      <td>
+        {{student.pvalue}}
+      </td>
+      <td>
+        {{student.id}}
+      </td>
+<td>
+        {{student.name}}
+      </td>
+      <td>
+        {{student.major}}
+      </td>
+    </tr>
+  </table>
+</div>

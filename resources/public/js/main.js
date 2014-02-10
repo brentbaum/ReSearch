@@ -7,17 +7,18 @@ var app = angular.module('matcher', ['ui.bootstrap'])
         $routeProvider.
             when('/', { templateUrl: '/partials/home.html', controller: 'SurveyCtrl' }).
             when('/student', { templateUrl: '/partials/survey.html', controller: 'SurveyCtrl',
-                resolve: {
-                    setStudent: ['sessionService', function (sessionService) {
-                        sessionService.isProfessor = false;
-                    }]
-                }}).
+                               resolve: {
+                                   setStudent: ['sessionService', function (sessionService) {
+                                       sessionService.isProfessor = false;
+                                   }]
+                               }}).
             when('/professor', { templateUrl: '/partials/survey.html', controller: 'SurveyCtrl',
-                resolve: {
-                    setProfessor: ['sessionService', function (sessionService) {
-                        sessionService.isProfessor = true;
-                    }]
-                }});
+                                 resolve: {
+                                     setProfessor: ['sessionService', function (sessionService) {
+                                         sessionService.isProfessor = true;
+                                     }]
+                                 }}).
+            when('/professor/:id', { templateUrl: '/partials/results.html', controller: 'ResultCtrl'});
 
         $locationProvider.html5Mode(true);
     }]);
@@ -80,9 +81,7 @@ var httpService = app.factory('httpService', ['$http', function ($http) {
             interests: interests,
             research: research
         })
-            .success(function (data) {
-                cb(data);
-            });
+            .success(cb);
     };
 
     service.createStudent = function (name, id, interests, experience, cb) {
@@ -92,11 +91,14 @@ var httpService = app.factory('httpService', ['$http', function ($http) {
             interests: interests,
             experience: experience
         })
-            .success(function (data) {
-                cb(data);
-            });
+            .success(cb);
     };
 
+    service.getPairings = function (id, cb) {
+        $http.post(url + '/professor/'+id, {id: id})
+            .success(cb);
+    }
+    
     return service;
 }]);
 
@@ -137,4 +139,11 @@ var sessionService = app.factory('sessionService', [function () {
     service.isProfessor = false;
 
     return service;
+}]);
+
+var resultCtrl = app.controller('ResultCtrl', ['$routeParams', '$scope', 'httpService', function($routeParams, $scope, httpService) {
+    $scope.id = $routeParams['id'];
+    httpService.getPairings($scope.id, function(data) {
+        $scope.results = data;
+    });
 }]);

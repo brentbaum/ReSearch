@@ -4,15 +4,16 @@
 
 (deftest score-test
   (testing "Score method works."
-    (let [w [3 2 1 4]
-          s {:interests [1 1 0 1]}
-          p {:interests [0 1 1 1]}]
-      (is (= 6 (score w s p))))))
+    (let [w {"biomedical-engineering" 1 "computer-science" 2 "computer-scienceartificial-intelligence" 3}
+          s {:interests #{"biomedical-engineering" "farm-science" "computer-scienceartificial-intelligence"}}
+          p {:interests ["biomedical-engineering" "computer-scienceartificial-intelligence"]}]
+      (is (= 0.9820137425143775 (score w s p)))
+      (is (= 0 (score w s {:interests #{}}))))))
 
 (deftest recommend-test
   (testing "Recommend returns best match"
-    (let [john (professor "John Schmone" [0 1 1 0 1] "hello@virginia.edu" "I mostly herp and derp.")
-          will (professor "Will Guiford" [1 1 0 1 0] "will@virginia.edu" "I find things out about the world.")
+    (let [john (professor "John Schmoe" #{"computer-scienceartificial-intelligence computer-science"} "hello@virginia.edu" "I mostly herp and derp.")
+          will (professor "Will Guiford" #{"biomedical-engineering"} "will@virginia.edu" "I find things out about the world.")
           prof-list [john will]
-          brent (student "Brent Baumgartner" [0 1 1 0 1] "bwb8ta@virginia.edu")]
-      (is (= john (recommend brent prof-list))))))
+          brent (student "Brent Baumgartner" #{"computer-scienceartificial-intelligence"} "bwb8ta@virginia.edu" {})]
+      (is (= john (first (compute-matches brent prof-list)))))))

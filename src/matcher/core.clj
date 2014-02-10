@@ -29,10 +29,13 @@
 (defn score [w prof stud]
   (let [s1 (-> prof :interests set)
         s2 (-> stud :interests set)]
-  (reduce #(+ (get w %2 1) %1) 0 (set/intersection s1 s2))))
+    (/ 1 (+ 1 (Math/pow 2.71828 (* -1 (reduce #(+ (get w %2 1) %1) 0 (set/intersection s1 s2))))))))
 
-(defn find-matches [stud] (take 5 (sort-by (partial score weights stud) (db/get-professors))))
-(defn recommend [stud] (apply max-key (partial score weights stud) (db/get-professors)))
+(defn compute-matches [s1 s2] (take 5 (sort-by (partial score weights s1) s2)))
+
+(defn find-professor-matches [stud] (compute-matches stud (db/get-professors)))
+
+(defn find-student-matches [prof] (compute-matches prof (db/get-students)))
 
 (defn get-student-info [id]
   ( db/get-student-by-id id))

@@ -1,124 +1,75 @@
 <div class="container">
-    <h1 ng-show="!isProfessor">Student Research Form</h1>
-    <h1 ng-show="isProfessor">Professor Research Form</h1>
-    <div collapse="showResults">
-        <div class="form-group">
-            <label class="control-label" for="nameInput">Full Name</label>
-            <input id="nameInput" ng-model="name" class="form-control" placeholder="Thomas Jefferson" type="text"/>
+  <h1 ng-show="!isProfessor">Student Research Form</h1>
+  <h1 ng-show="isProfessor">Professor Research Form</h1>
+  <div collapse="showResults">
+    <div class="form-group">
+      <label class="control-label" for="nameInput">Full Name</label>
+      <input id="nameInput" ng-model="name" class="form-control" placeholder="Thomas Jefferson" type="text"/>
+    </div>
+
+    <!-- UVA EMAIL -->
+    <div class="form-group">
+      <label class="control-label" for="idInput">UVa Id</label>
+      <input required id="idInput" ng-model="id" class="form-control" placeholder="tj8di"
+             type="text"/>
+    </div>
+
+    <!-- ABOUT STUDENT -->
+
+    <div ng-show="!isProfessor">
+      <label>What is your intended major?</label>
+      <select class="form-control">
+        <option>English</option>
+        <option>History</option>
+        <option>Economics</option>
+        <option>Mathematics</option>
+        <option>Physics</option>
+        <option>Chemistry</option>
+      </select>
+
+      <label>
+        <label>Gender?</label>
+        <div class="radio">
+          <label class="radio-inline" >
+            <input type="radio" name="gender" value="male" ng-model="gender" />
+            Male
+          </label>
         </div>
-
-        <!-- UVA EMAIL -->
-        <div class="form-group">
-            <label class="control-label" for="idInput">UVa Id</label>
-            <input required id="idInput" ng-model="id" class="form-control" placeholder="tj8di"
-                   type="text"/>
-        </div>
-
-        <!-- RESEARCH DESCRIPTION -->
-        <div ng-show="isProfessor">
-            <div class="form-group" rows="3">
-                <label class="control-label" for="researchDescription">Research Description</label>
-                <textarea ng-model="research" class="form-control" id="researchDescription"></textarea>
-            </div>
-        </div>
-
-        <!-- PREVIOUS EXPERIENCE -->
-
-        <div ng-show="!isProfessor">
-            <label>Have you worked with a UVA faculty member before?</label>
-            <div class="radio">
-                <label class="radio-inline" >
-                    <input type="radio" name="hasDoneResearch" value="true" ng-model="experience.hasDoneResearch" />
-                    Yes
-                </label>
-            </div>
-            <div class="radio">
-                <label class="radio-inline">
-                    <input type="radio" name="hasDoneResearch" value="false" ng-model="experience.hasDoneResearch" />
-                    No
-                </label>
-            </div>
-        </div>
-        <div ng-show="experience.hasDoneResearch">
-            <div class="form-group">
-                <label class="control-label" for="facultyId" >What was their UVa ID?</label>
-                <input id="facultyId" class="form-control" ng-model="experience.facultyId" type="text" />
-            </div>
-            <label>Did you enjoy working with this faculty member?</label>
-            <div class="radio">
-                <label class="radio-inline" >
-                    <input type="radio" name="enjoyedWork" value="true" ng-model="experience.enjoyedWork" />
-                    Yes
-                </label>
-            </div>
-            <div class="radio">
-                <label class="radio-inline">
-                    <input type="radio" name="enjoyedWork" value="false" ng-model="experience.enjoyedWork"/>
-                    No
-                </label>
-            </div>
-            <label>Were you satisfied with what you learned and did while working with this faculty member?</label>
-            <div class="radio">
-                <label class="radio-inline" >
-                    <input type="radio" name="wasSatisfied" value="true" ng-model="experience.wasSatisfied" />
-                    Yes
-                </label>
-            </div>
-            <div class="radio">
-                <label class="radio-inline">
-                    <input type="radio" name="wasSatisfied" value="false" ng-model="experience.wasSatisfied" />
-                    No
-                </label>
-            </div>
-            <label>Would you consider working with this faculty member again?</label>
-            <div class="radio">
-                <label class="radio-inline" >
-                    <input type="radio" name="wouldWorkAgain" value="true" ng-model="experience.wouldWorkAgain" />
-                    Yes
-                </label>
-            </div>
-            <div class="radio">
-                <label class="radio-inline">
-                    <input type="radio" name="wouldWorkAgain" value="false" ng-model="experience.wouldWorkAgain" />
-                    No
-                </label>
-            </div>
-        </div>
-
-        <!-- INTERESTS -->
-        <label>Academic Interests</label>
-        <accordion close-others="false">
-            <accordion-group ng-repeat="field in fields" ng-click="field.open = !field.open" is-open="field.open">
-                <accordion-heading>
-                    <input type="checkbox" ng-click="fieldClick(field, $event)"/>
-                    {{field.title}}
-                </accordion-heading>
-                <div class="checkbox" ng-repeat="focus in field.focuses">
-                    <label>
-                        <input type="checkbox" ng-click="updateInterest(focus.id, $event.currentTarget.checked, $event);"
-                               ng-model="focus.selected"/> {{focus.title}}
-                    </label>
-                </div>
-            </accordion-group>
-        </accordion>
-
-        <div class="form-group" style="margin-top: 20px;">
-            <button class="btn btn-success" ng-click="submitForm()">Submit</button>
+        <div class="radio">
+          <label class="radio-inline">
+            <input type="radio" name="gender" value="female" ng-model="gender" />
+            Female
+          </label>
         </div>
     </div>
-    <div collapse="!showResults">
-        <div ng-show="!isProfessor">
-            <h2>Your Matches</h2>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="result in results">
-                    <h4 class="list-group-item-heading">{{result.name}}</h4>
-                    <p class="list-group-item-text">{{result.research}}</p>
-                    <a class="btn btn-primary" href="mailto:{{result.id}}">Contact me</a>
-                </li>
-            </ul>
+
+    <!-- INTERESTS -->
+    <label>Academic Interests</label>
+    <accordion close-others="false">
+      <accordion-group ng-repeat="field in fields" ng-click="field.open = !field.open" is-open="field.open">
+        <accordion-heading>
+          <input type="checkbox" ng-click="fieldClick(field, $event)"/>
+          {{field.title}}
+        </accordion-heading>
+        <div class="checkbox" ng-repeat="focus in field.focuses">
+          <label>
+            <input type="checkbox" ng-click="updateInterest(focus.id, $event.currentTarget.checked, $event);"
+                   ng-model="focus.selected"/> {{focus.title}}
+          </label>
         </div>
-        <div ng-show="isProfessor" class="alert alert-success">
-            Thank you! Your information has been entered into our system.
-        </div>
+      </accordion-group>
+    </accordion>
+
+    <div class="form-group" style="margin-top: 20px;">
+      <button class="btn btn-success" ng-click="submitForm()">Submit</button>
     </div>
+  </div>
+  <div collapse="!showResults">
+    <div class="alert alert-success">
+      Thank you! Your information has been entered into our system.
+      <p ng-show="!isProfessor">
+        You should hear back from UVa on your advisor pairing soon.
+      </p>
+    </div>
+  </div>
 </div>

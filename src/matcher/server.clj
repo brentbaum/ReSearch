@@ -13,18 +13,22 @@
 
 (defn score-student [req]
   (let [stud (student-from-request req)]
-    (response (mcore/find-matches stud))))
+    (response (mcore/find-professor-matches stud))))
 
 (defn update-student-info [id]
   (str "Updating " id))
 
 (defn create-student [req]
   (let [stud (student-from-request req)
-        matches (mcore/find-matches stud)]
+        matches (mcore/find-professor-matches stud)]
     (db/store-student (assoc stud :matches (map :id matches)))
     (response matches)))
 
-(map :id [{:id 1}, {:id 2}, {:id 3}])
+(defn pick-advisees [req]
+  (let [prof (professor-from-request req)
+        matches (mcore/find-student-matches prof)]
+    (response matches))
+  )
 
 (defn create-professor [req]
   (let [prof (professor-from-request req)]
@@ -40,6 +44,8 @@
            (POST "/:id" [id] update-student-info))
   (POST "/professor/new" [] create-professor)
   (GET "/professor" [] (file-response "/index.html" {:root "resources/public"}))
+  (GET "/professor/:id" [id] (file-response "/index.html" {:root "resources/public"}))
+  (POST "/professor/:id" [] pick-advisees)
   (resources "/")
   (not-found "<p>Page not found.</p>"))
 
