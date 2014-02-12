@@ -31,11 +31,20 @@
         s2 (-> stud :interests set)]
     (/ 1 (+ 1 (Math/pow 2.71828 (* -1 (reduce #(+ (get w %2 1) %1) 0 (set/intersection s1 s2))))))))
 
-(defn compute-matches [s1 s2] (take 5 (sort-by (partial score weights s1) s2)))
+(defn new-compute [p coll] (take 5 (sort-by first (map #(vector (score weights p %) %) coll))))
+
+(let [arstneio (db/get-students)
+      oientsra (last (db/get-professors))]
+  (map #(vector ((second %) :id) (first %)) (take 5 (sort-by first (map #(vector (score weights oientsra %) %) arstneio))))
+   )
+
+(map #(vector (first %) ((second %) :id)) (new-compute (first (db/get-professors)) (db/get-students)))
+
+(defn compute-matches [p coll] (take 5 (sort-by (partial score weights p) coll)))
 
 (defn find-professor-matches [stud] (compute-matches stud (db/get-professors)))
 
-(defn find-student-matches [prof] (compute-matches prof (db/get-students)))
+(defn find-student-matches [prof] (map second (new-compute prof (db/get-students))))
 
 (defn get-student-info [id]
   ( db/get-student-by-id id))

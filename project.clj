@@ -11,7 +11,7 @@
                  [compojure "1.1.5"]
                  [ring-cors "0.1.0"]
                  [com.novemberain/monger "1.7.0-beta1"]
-                 ]
+                 [org.clojure/tools.trace "0.7.6"]]
   :plugins [[lein-autoexpect "1.2.1"]
             [lein-kibit "0.0.8"]]
   :main matcher.server)

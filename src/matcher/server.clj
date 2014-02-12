@@ -7,7 +7,8 @@
         [ compojure.handler :only [site]]
         [ compojure.core :only [defroutes GET POST DELETE ANY context]]
         [ ring.middleware.json]
-        [ ring.util.response]))
+        [ ring.util.response]
+        [ org.clojure/tools.trace]))
 
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
@@ -20,9 +21,11 @@
 
 (defn create-student [req]
   (let [stud (student-from-request req)
-        matches (mcore/find-professor-matches stud)]
-    (db/store-student (assoc stud :matches (map :id matches)))
-    (response matches)))
+        matches (mcore/find-professor-matches stud)
+        formatted-stud (assoc stud :matches (map #(vector ((second %) :id) (first %)) matches))]
+    
+    (db/store-student formatted-stud)
+    (response (map second matches))))
 
 (defn pick-advisees [req]
   (let [prof (professor-from-request req)

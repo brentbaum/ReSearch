@@ -1,13 +1,22 @@
-# matcher
+# UVa ReSearch / Advisor Match
 
-A Clojure library designed to ... well, that part is up to you.
+A web app which matches students to the professor they would have the highest probability of success doing research with. 
+There are two components of the app: the professor survey and the student survey / recommendation page. After all the professors have submitted their responses to the survey, the students take the survey and submit. The backend receives the survey responses and student info, calculates p-scores for every professor for that student, then sends back the top 5 professors to the front end, where those 5 are displayed to the user. 
 
 ## Usage
 
-FIXME
+Assuming leinengen is installed and port 8080 is available...
 
-## License
+Pull in dependencies
+```lein deps```
 
-Copyright © 2013 FIXME
+Run the project
+```lein run```
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Navigate to localhost:8080
+
+```open http://localhost:8080```
+
+
+
+Project created with [bootstrap](http://getbootstrap.com/), [mongodb](http://www.mongodb.org/), and [clojure](http://clojure.org/)
