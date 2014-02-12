@@ -8,15 +8,15 @@ There are two components of the app: the professor survey and the student survey
 Assuming leinengen is installed and port 8080 is available...
 
 Pull in dependencies
-```lein deps```
+
+    lein deps
 
 Run the project
-```lein run```
+    lein run
 
 Navigate to localhost:8080
 
-```open http://localhost:8080```
-
+    open http://localhost:8080
 
 
 Project created with [bootstrap](http://getbootstrap.com/), [mongodb](http://www.mongodb.org/), and [clojure](http://clojure.org/)
