@@ -12,6 +12,7 @@ Pull in dependencies
     lein deps
 
 Run the project
+
     lein run
 
 Navigate to localhost:8080
