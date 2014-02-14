@@ -98,7 +98,7 @@ var httpService = app.factory('httpService', ['$http', function ($http) {
         $http.post(url + '/professor/'+id, {id: id})
             .success(cb);
     }
-    
+
     return service;
 }]);
 
@@ -144,6 +144,7 @@ var sessionService = app.factory('sessionService', [function () {
 var resultCtrl = app.controller('ResultCtrl', ['$routeParams', '$scope', 'httpService', function($routeParams, $scope, httpService) {
     $scope.id = $routeParams['id'];
     httpService.getPairings($scope.id, function(data) {
+      console.log(data);
         $scope.results = data;
     });
 }]);

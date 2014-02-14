@@ -7,8 +7,7 @@
         [ compojure.handler :only [site]]
         [ compojure.core :only [defroutes GET POST DELETE ANY context]]
         [ ring.middleware.json]
-        [ ring.util.response]
-        [ org.clojure/tools.trace]))
+        [ ring.util.response]))
 
 (defn show-landing-page [req] "Welcome to Zombocom!")
 
@@ -19,13 +18,16 @@
 (defn update-student-info [id]
   (str "Updating " id))
 
-(defn create-student [req]
+(defn create-and-store-student [req]
+  (db/store-student (student-from-request req)))
+
+(defn create-student-with-matches [req]
   (let [stud (student-from-request req)
-        matches (mcore/find-professor-matches stud)
-        formatted-stud (assoc stud :matches (map #(vector ((second %) :id) (first %)) matches))]
-    
-    (db/store-student formatted-stud)
-    (response (map second matches))))
+                matches (mcore/find-professor-matches stud)
+                formatted-stud (assoc stud :matches (map #(vector ((second %) :id) (first %)) matches))]
+            
+            (db/store-student formatted-stud)
+            (response (map second matches))))
 
 (defn pick-advisees [req]
   (let [prof (professor-from-request req)
@@ -42,7 +44,7 @@
   (POST "/recommend" [] score-student)
   (context "/student" []
            (GET "/" [] (file-response "/index.html" {:root "resources/public"}))
-           (POST "/new" [] create-student)
+           (POST "/new" [] create-and-store-student)
            (GET "/:id" [id] mcore/get-student-info id)
            (POST "/:id" [id] update-student-info))
   (POST "/professor/new" [] create-professor)

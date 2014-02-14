@@ -17,3 +17,8 @@
           prof-list [john will]
           brent (student "Brent Baumgartner" #{"computer-scienceartificial-intelligence"} "bwb8ta@virginia.edu" {})]
       (is (= john (first (compute-matches brent prof-list)))))))
+
+(deftest create-student-test
+  (testing "Server creates and stores student properly"
+    (let [stud (student-from-request student-req)]
+      (is (= stud  "bwb8ta")))))
