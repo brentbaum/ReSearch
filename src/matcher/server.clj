@@ -9,8 +9,6 @@
         [ ring.middleware.json]
         [ ring.util.response]))
 
-(defn show-landing-page [req] "Welcome to Zombocom!")
-
 (defn score-student [req]
   (let [stud (student-from-request req)]
     (response (mcore/find-professor-matches stud))))
@@ -30,9 +28,12 @@
             (response (map second matches))))
 
 (defn pick-advisees [req]
-  (let [prof (professor-from-request req)
+  (let [prof (db/get-professor-by-id (-> req :body (get "id")))
         matches (mcore/find-student-matches prof)]
-    (response matches))
+    (println prof)
+    (if (db/has-professor prof)
+      (response matches)
+      (response {"error" "resource not found"})))
   )
 
 (defn create-professor [req]

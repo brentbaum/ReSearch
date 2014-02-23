@@ -21,5 +21,6 @@
  (store-student stud)
 
 (defn get-professors [] (map clean ( find-maps professor-doc)))
+(defn has-professor [prof] (not (nil? (find-one-as-map professor-doc {:id (prof :id)}))))
+(defn get-professor-by-id [id] (find-one-as-map professor-doc {:id id}))
 (defn store-professor [prof] (clean (if (insert professor-doc prof) prof {:status "ERR"})))
-(defn drop-professors [] (remove professor-doc))
