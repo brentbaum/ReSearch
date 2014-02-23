@@ -65,7 +65,7 @@ var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldLi
             httpService.storeProfessor($scope.name, $scope.id, interestsList, $scope.research, createCallback);
         }
         else {
-            httpService.createStudent($scope.name, $scope.id, interestsList, $scope.experience, createCallback);
+            httpService.createStudent($scope.name, $scope.id, $scope.major, interestsList, $scope.experience, createCallback);
         }
     };
 
@@ -84,10 +84,11 @@ var httpService = app.factory('httpService', ['$http', function ($http) {
             .success(cb);
     };
 
-    service.createStudent = function (name, id, interests, experience, cb) {
+    service.createStudent = function (name, id, major, interests, experience, cb) {
         $http.post(url + '/student/new', {
             name: name,
             id: id,
+          major: major,
             interests: interests,
             experience: experience
         })
@@ -127,7 +128,7 @@ var fieldlist = app.factory('fieldList', ['$http', function ($http) {
     };
 
     function makeFieldId(fieldName, focusName) {
-        return fieldName.replace(" ", "-").toLowerCase() + focusName.replace(" ", "-").toLowerCase();
+        return fieldName.split(" ").join("-").toLowerCase() + focusName.split(" ").join("-").toLowerCase();
     }
 
     return service;
@@ -145,6 +146,6 @@ var resultCtrl = app.controller('ResultCtrl', ['$routeParams', '$scope', 'httpSe
     $scope.id = $routeParams['id'];
     httpService.getPairings($scope.id, function(data) {
       console.log(data);
-        $scope.results = data;
+      $scope.results = data;
     });
 }]);
