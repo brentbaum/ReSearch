@@ -71,6 +71,13 @@ var surveyCtrl = app.controller('SurveyCtrl', ['$scope', 'httpService', 'fieldLi
 
 }]);
 
+var homeController = app.controller('HomeCtrl', ['$scope', function($scope) {
+    $scope.professorRedirect = function() {
+      if(!!$scope.professor_link && $scope.professor_link != "")
+        document.location.href = '/professor/' + $scope.professor_link;
+    };
+}]);
+
 var httpService = app.factory('httpService', ['$http', function ($http) {
     var service = {}, url = '';
 

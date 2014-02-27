@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title></title>
-</head>
-<body>
+  </head>
+  <body>
 
-<div class="container">
-    <div class="jumbotron">
+    <div class="container" ng-controller="HomeCtrl">
+      <div class="jumbotron">
         <h1>ReSearch Assistant</h1>
 
         <p>UVA ReSearch matches you with the professors with whom you have the highest chance of succeeding.</p>
 
         <p>
-            <a class="btn btn-lg btn-primary" href="/student" >For Students</a>
-            <a class="btn btn-lg btn-primary" href="/professor" >For Professors</a>
+          <a class="btn btn-lg btn-primary" href="/student" >For Students</a>
+          <a class="btn btn-lg btn-primary" href="/professor" >For Professors</a>
         </p>
-    </div>
-</div>
-</body>
+      </div>
+      <p>
+        Already filled out the survey? 
+      </p>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="input-group">
+            <input type="text" placeholder="See your advisees" class="form-control" ng-model="professor_link">
+            <span class="input-group-btn">
+              <button ng-click="professorRedirect()" class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row --></div>
+  </body>
 </html>
